@@ -1,0 +1,43 @@
+{
+  "name": "@small-tech/remote",
+  "version": "1.0.0",
+  "description": "A little class for messaging with sockets.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/index.js",
+    "coverage": "c8 tape test/index.js"
+  },
+  "keywords": [
+    "remoting",
+    "remote",
+    "socket",
+    "message",
+    "messaging",
+    "isomorphic"
+  ],
+  "author": {
+    "name": "Aral Balkan",
+    "email": "aral@small-tech.org",
+    "url": "https://ar.al"
+  },
+  "license": "ISC",
+  "funding": {
+    "type": "foundation",
+    "url": "https://small-tech.org/fund-us/"
+  },
+  "homepage": "https://github.com/small-tech/remote#readme",
+  "bugs": {
+    "url": "https://github.com/small-tech/remote/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/small-tech/remote.git"
+  },
+  "devDependencies": {
+    "c8": "^7.7.3",
+    "tape": "^5.2.2"
+  },
+  "dependencies": {
+    "keypather": "^3.1.0"
+  }
+}
