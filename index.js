@@ -19,7 +19,7 @@ class Remote {
     socket.addEventListener ('message', event => {
       // Call the correct handler based on the event type key path.
       const message = JSON.parse(event.data)
-      const handler = getKeyPath(this, message.type)
+      const handler = getKeyPath(this, `${message.type}.handler`)
       if (typeof handler !== 'function') {
         console.warn(`Remote: Unhandled message (type: ${message.type})`)
       } else {
@@ -34,19 +34,18 @@ class Remote {
           // The key doesn’t exist. If this is a request,
           // fire it off. If not, create the key.
 
-          if (keyPath === 'request') {
+          if (keyPath === 'send') {
             return (message) => {
               this.socket.send(JSON.stringify(Object.assign({
-                type: `${self.keyPath}.request`
+                type: self.keyPath
               }, message)))
             }
           }
 
           self[keyPath] = {}
           self[keyPath].keyPath = self.keyPath === '' ? keyPath : `${self.keyPath}.${keyPath}`
-          return new Proxy(self[keyPath], handler)
         }
-        return self[keyPath]
+        return new Proxy(self[keyPath], handler)
       }
     }
 

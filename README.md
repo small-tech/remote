@@ -12,26 +12,41 @@ const socket = new WebSocket('wss://my.socket/')
 const remote = new Remote(socket)
 
 // Handle messages of type my.fancy.response
-remote.my.fancy.response = message => {
+remote.my.fancy.response.handler = message => {
   console.log('I got a fancy response', message)
 }
 
 // Handle messages of type my.fancy.progress
-remote.my.fancy.progress = message => {
+remote.my.fancy.progress.handler = message => {
   console.log('Progress: ', message.progress)
 }
 
 // Send a message of type my.fancy.request
-remote.my.fancy.request({
+remote.my.fancy.request.send({
   please: true
+})
+
+// You can also send and handle the same message type.
+
+// Handle messages of type 'chat'.
+remote.chat.handler = message => {
+  console.log('Received message:', message.from, message.body)
+}
+
+// Send a message of type 'chat'.
+remote.chat.send({
+  from: 'Aral',
+  body: 'Hello!'
 })
 ```
 
 Messages are sent as JSON strings and received messages are parsed from JSON strings.
 
-You’ll see warnings about unhandled messages, if any, in the console.
+__Note:__ `send` is a special method used when sending a message. Similarly, `handler` is a special method used to handle received messages.
 
-__Note:__ `request` is a special method used when sending a message. It is also included in the name of the message. However, `progress` and `response` are not special terms. You can name the leaf node of a message name anything you want.
+Otherwise, there is nothing special about the path segments that make up the event name and the Remote class will create the object hierarchies defined by them automatically.
+
+You’ll see warnings about unhandled messages, if any, in the console.
 
 ## Test
 

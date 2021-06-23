@@ -17,18 +17,17 @@ test('basic', t => {
 
   // Test requests.
 
-  remote.dns.validate.request({
+  remote.dns.validate.request.send({
     please: true
   })
 
   const sentMessage = JSON.parse(mockSocket.sentMessages[0])
-  console.log(sentMessage)
   t.strictEquals(sentMessage.type, 'dns.validate.request', 'message type is correct')
   t.strictEquals(sentMessage.please, true, 'message data is correctly set')
 
   // Test responses.
 
-  remote.dns.validate.response = function (message) {
+  remote.dns.validate.response.handler = function (message) {
     t.pass('remote.dns.validate.response handled')
     t.strictEquals(message.ok, true, 'message data is correctly passed to handler')
   }
