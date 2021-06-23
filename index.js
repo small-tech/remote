@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-const getKeyPath = require('keypather/get')
+const keyd = require('keyd')
 
 class Remote {
   constructor (socket) {
@@ -19,7 +19,7 @@ class Remote {
     socket.addEventListener ('message', event => {
       // Call the correct handler based on the event type key path.
       const message = JSON.parse(event.data)
-      const handler = getKeyPath(this, `${message.type}.handler`)
+      const handler = keyd(this).get(`${message.type}.handler`)
       if (typeof handler !== 'function') {
         console.warn(`Remote: Unhandled message (type: ${message.type})`)
       } else {
