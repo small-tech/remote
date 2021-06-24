@@ -10,7 +10,7 @@ class MockSocket extends EventTarget {
 }
 
 test('basic', t => {
-  t.plan(5)
+  t.plan(4)
 
   const mockSocket = new MockSocket()
   const remote = new Remote(mockSocket)
@@ -36,18 +36,6 @@ test('basic', t => {
     data: JSON.stringify({
       type: 'dns.validate.response',
       ok: true
-    })
-  }))
-
-  // Message without handler.
-
-  console.warn = function (message) {
-    t.strictEquals(message, 'Remote: Unhandled message (type: handler.does.not.exist)')
-  }
-
-  mockSocket.dispatchEvent(new MessageEvent('message', {
-    data: JSON.stringify({
-      type: 'handler.does.not.exist',
     })
   }))
 })

@@ -20,9 +20,7 @@ class Remote {
       // Call the correct handler based on the event type key path.
       const message = JSON.parse(event.data)
       const handler = keyd(this).get(`${message.type}.handler`)
-      if (typeof handler !== 'function') {
-        console.warn(`Remote: Unhandled message (type: ${message.type})`)
-      } else {
+      if (typeof handler === 'function') {
         handler(message)
       }
     })

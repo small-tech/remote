@@ -46,8 +46,6 @@ __Note:__ `send` is a special method used when sending a message. Similarly, `ha
 
 Otherwise, there is nothing special about the path segments that make up the event name and the Remote class will create the object hierarchies defined by them automatically.
 
-You’ll see warnings about unhandled messages, if any, in the console.
-
 ## Test
 
 ```shell
