@@ -1,4 +1,39 @@
-<script>
-  const socket = new WebSocket(`://${window.location.hostname}`)
+<script type='module'>
+  // Only load from Skypack for simple demonstration purposes. Don’t
+  // use in production as it doesn’t support sub-resource integrity.
+  // (See https://ar.al/2020/12/30/skypack-backdoor-as-a-service/)
+  import Remote from 'https://cdn.skypack.dev/@small-tech/remote'
 
+  const socket = new WebSocket(`wss://${window.location.hostname}/`)
+  const remote = new Remote(socket)
+
+  socket.addEventListener('open', () => {
+    // Socket is open, let’s send some socket request.
+    remote.counter.increment.send()
+    remote.addNumbers.request.send({firstNumber: 40, secondNumber: 2})
+    remote.subtractNumbers.request.send({firstNumber: 42, secondNumber: 2})
+  })
+
+  remote.counter.update.handler = message => {
+    log(`Counter is now ${message.count}`)
+  }
+
+  remote.addNumbers.response.handler = message => {
+    log (`${message.firstNumber} + ${message.secondNumber} = ${message.result}`)
+  }
+
+  remote.subtractNumbers.response.handler = message => {
+    log(`${message.firstNumber} - ${message.secondNumber} = ${message.result}`)
+  }
+
+  // DOM manipulation.
+  const output = document.getElementById('output')
+  const log = message => {
+    const li = document.createElement('li')
+    li.innerHTML = message
+    output.appendChild(li)
+  }
 </script>
+
+<h1>Simple remote arithmetic</h1>
+<ul id='output'></ul>

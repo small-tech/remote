@@ -18,6 +18,7 @@ class Remote {
 
     socket.addEventListener ('message', event => {
       // Call the correct handler based on the event type key path.
+      console.log('Got message', event.data)
       const message = JSON.parse(event.data)
       const handler = keyd(this).get(`${message.type}.handler`)
       if (typeof handler === 'function') {
