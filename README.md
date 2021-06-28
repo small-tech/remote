@@ -46,6 +46,16 @@ __Note:__ `send` is a special method used when sending a message. Similarly, `ha
 
 Otherwise, there is nothing special about the path segments that make up the event name and the Remote class will create the object hierarchies defined by them automatically.
 
+## Important note about passing references to Remote instances
+
+On the client, you might feel the need to pass references to Remote instance to child components in your interface.
+
+Don’t.
+
+Remember that each Remote instance keeps its own list of event handlers. If you pass a reference to a Remote instance to a child component (e.g., using a SvelteKit property) and define an event handler there that was already defined on the parent (or a sibling) component, you will end up overwriting it.
+
+Instead, pass references to the original socket and create a new Remote instance in each component that you want to make use of the Remote interface.
+
 ## Test
 
 ```shell
