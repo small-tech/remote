@@ -57,6 +57,18 @@ remote.my.fancy.request.handler = message => {
 }
 ```
 
+When using `await`, there is a default 10-second timeout. You can customise this per request by passing the duration in miliseconds as the second parameter. e.g.,
+
+```js
+// Request with custom 1-second timeout
+let response
+try {
+  response = remote.my.fany.request.await({}, 1000)
+} catch (error) {
+  // Handle the timeout error here.
+}
+```
+
 ### Handling and sending the same message type
 
 ```js

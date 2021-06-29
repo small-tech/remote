@@ -24,7 +24,7 @@ class MockSocket extends EventTarget {
 }
 
 test('basic', async t => {
-  t.plan(10)
+  t.plan(11)
 
   const mockSocket = new MockSocket()
   const remote = new Remote(mockSocket)
@@ -73,4 +73,12 @@ test('basic', async t => {
   t.strictEquals(response.type, originalMessage.type, 'awaited response type is correct')
   t.strictEquals(response.__id, originalMessage.__id, 'awaited response __id is correct')
   t.strictEquals(response.ok, true, 'awaited response custom value is correct')
+
+  // Test timeout
+
+  try {
+    await remote.this.request.should.time.out.await({}, /* timeout in */ 100)
+  } catch (error) {
+    t.pass('request times out as expected')
+  }
 })

@@ -54,22 +54,27 @@ class Remote {
           }
 
           if (keyPath === 'await') {
-            return async (message = {}) => {
+            return async (message = {}, timeout = 10000 /* 10 seconds */) => {
+
               const __id = uuid()
+
               this.socket.send(JSON.stringify(Object.assign({
                 type: self.keyPath,
                 __id
               }, message)))
+
               return new Promise((resolve, reject) => {
+                const timeoutId = setTimeout(() => {
+                  this.socket.removeEventListener('message', listener)
+                  reject(new Error('Request timed out'))
+                }, timeout)
+
                 const listener = (event => {
                   const message = JSON.parse(event.data)
                   if (message.__id === __id) {
+                    clearInterval(timeoutId)
                     this.socket.removeEventListener('message', listener)
-                    if (message.error) {
-                      reject(message)
-                    } else {
-                      resolve(message)
-                    }
+                    resolve(message)
                   }
                 }).bind(this)
                 this.socket.addEventListener('message', listener)
