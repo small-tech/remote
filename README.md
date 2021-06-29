@@ -67,7 +67,7 @@ When using `await`, there is a default 10-second timeout. You can customise this
 // Request with custom 1-second timeout
 let response
 try {
-  response = remote.my.fany.request.await({}, 1000)
+  response = remote.my.fancy.request.await({}, 1000)
 } catch (error) {
   // Handle the timeout error here.
 }
