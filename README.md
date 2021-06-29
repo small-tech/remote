@@ -8,6 +8,10 @@ Remote is a tiny (< 100 lines of code), expressive, and elegant isomorphic JavaS
 npm install @small-tech/remote
 ```
 
+## Example
+
+The [example app](/example) written for [Site.js](https://sitejs.org) demonstrates the basics of using the Remote module.
+
 ## Usage
 
 ### Initialisation

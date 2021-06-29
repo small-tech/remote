@@ -7,11 +7,14 @@
   const socket = new WebSocket(`wss://${window.location.hostname}/`)
   const remote = new Remote(socket)
 
-  socket.addEventListener('open', () => {
+  socket.addEventListener('open', async () => {
     // Socket is open, let’s send some socket request.
     remote.counter.increment.send()
     remote.addNumbers.request.send({firstNumber: 40, secondNumber: 2})
     remote.subtractNumbers.request.send({firstNumber: 44, secondNumber: 2})
+
+    const response = await remote.a.little.async.never.hurt.anyone.await()
+    log(response.factCheck)
   })
 
   remote.counter.update.handler = message => {

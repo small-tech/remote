@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@small-tech/remote": "^2.1.0"
+    "@small-tech/remote": "^2.2.0"
   }
 }

@@ -26,4 +26,9 @@ module.exports = function (client, request) {
     count++
     remote.counter.update.send({ count })
   }
+
+  // Await-based request handler.
+  remote.a.little.async.never.hurt.anyone.handler = message => {
+    remote.a.little.async.never.hurt.anyone.respond(message, {factCheck: 'It’s true'})
+  }
 }
