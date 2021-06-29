@@ -1,16 +1,28 @@
 # @small-tech/remote
 
-A little class for messaging with sockets.
+Remote is a tiny (< 100 lines of code), expressive, and elegant isomorphic JavaScript WebSocket interface.
+
+## Installation
+
+```shell
+npm install @small-tech/remote
+```
 
 ## Usage
+
+### Initialisation
 
 ```js
 import Remote from '@small-tech/remote'
 
-// e.g., In the browser (you can also use it in Node)
+// Works in the browser and Node.js (use, e.g., ws module on the latter)
 const socket = new WebSocket('wss://my.socket/')
 const remote = new Remote(socket)
+```
 
+### Regular messaging
+
+```js
 // Handle messages of type my.fancy.response
 remote.my.fancy.response.handler = message => {
   console.log('I got a fancy response', message)
@@ -25,9 +37,29 @@ remote.my.fancy.progress.handler = message => {
 remote.my.fancy.request.send({
   please: true
 })
+```
 
-// You can also send and handle the same message type.
+### Request/response via await
 
+First node:
+
+```js
+// Request
+const response = remote.my.fancy.request.await({ optional: data })
+```
+
+Second node:
+
+```js
+// Response
+remote.my.fancy.request.handler = message => {
+  remote.my.fancy.request.respond(message, { optional: data })
+}
+```
+
+### Handling and sending the same message type
+
+```js
 // Handle messages of type 'chat'.
 remote.chat.handler = message => {
   console.log('Received message:', message.from, message.body)
@@ -40,13 +72,28 @@ remote.chat.send({
 })
 ```
 
+## How it works
+
 Messages are sent as JSON strings and received messages are parsed from JSON strings.
 
-__Note:__ `send` is a special method used when sending a message. Similarly, `handler` is a special method used to handle received messages.
+The syntax of Remote is as follows:
 
-Otherwise, there is nothing special about the path segments that make up the event name and the Remote class will create the object hierarchies defined by them automatically.
+__`remote`__`.some.custom.message.type.`__`action`__
 
-## Important note about passing references to Remote instances
+Calls start with a reference to the `Remote` instance and ends with an action. Anything in between the two comprises the message type.
+
+So `remote.my.fancy.message.type.send()` sends a message of type `my.fancy.message.type`.
+
+Valid actions are:
+
+  - `send`: _(function)_ sends a message.
+  - `respond`: _(function)_ like send but takes a reference to the original message and replies using its ID. Used in conjuction with `await` on the other node.
+  - `await`: _(function)_ returns a promise that resolves once the other node as responded to the message.
+  - `handler`: _(property)_ used to define a message handler.
+
+Note that Remote automatically creates the object hierarchy defined by the message type (thanks to the magic of proxies).
+
+## Important note: don’t pass references to Remote instances to child components
 
 On the client, you might feel the need to pass references to Remote instance to child components in your interface.
 
